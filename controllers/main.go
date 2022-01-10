@@ -10,4 +10,5 @@ func SuccessResponse(c *gin.Context, payload map[string]interface{}) {
 
 func ErrResponseWithCode(c *gin.Context, code int, msg string) {
 	c.JSON(code, gin.H{"success": false, "msg": msg})
+	c.AbortWithStatus(code)
 }

@@ -34,11 +34,11 @@ func (u UserController) Login(c *gin.Context) {
 		return
 	}
 
-	query := bson.D{{"username", loginForm.Username}}
+	query := bson.D{{Key: "username", Value: loginForm.Username}}
 	findUser, err := userRepository.FindOneUser(&query)
 
 	if err == mongo.ErrNoDocuments {
-		controllers.ErrResponseWithCode(c, 401, "ununauthorized")
+		controllers.ErrResponseWithCode(c, 401, "unauthorized")
 		return
 	}
 
@@ -47,15 +47,15 @@ func (u UserController) Login(c *gin.Context) {
 		return
 	}
 
-	cp := h.Decryption(findUser.Password, loginForm.Password)
+	decryp := h.Decryption(findUser.Password, loginForm.Password)
 
-	if !cp {
-		controllers.ErrResponseWithCode(c, 401, "ununauthorized")
+	if !decryp {
+		controllers.ErrResponseWithCode(c, 401, "unauthorized")
 		return
 	}
 
-	expTime := 2 * time.Second
-	token, errtoken := pasto.CreateToken(&findUser.UserName, &expTime)
+	expTime := 2 * time.Minute
+	token, errtoken := pasto.CreateToken(&findUser.ID, &findUser.UserName, &expTime)
 
 	if errtoken != nil {
 		controllers.ErrResponseWithCode(c, 500, errtoken.Error())
@@ -63,8 +63,32 @@ func (u UserController) Login(c *gin.Context) {
 	}
 
 	payload := map[string]interface{}{
-		"id":    cp,
+		"id":    findUser.ID,
 		"token": token,
+		"expri": time.Now().Add(expTime),
+	}
+
+	controllers.SuccessResponse(c, payload)
+}
+
+func (u UserController) Info(c *gin.Context) {
+
+	query := bson.D{{Key: "username", Value: "superAdmin"}}
+	findUser, err := userRepository.FindOneUser(&query)
+
+	if err == mongo.ErrNoDocuments {
+		controllers.ErrResponseWithCode(c, 401, "unauthorized")
+		return
+	}
+
+	payload := map[string]interface{}{
+		"id":       findUser.ID,
+		"username": findUser.UserName,
+	}
+
+	if err != nil {
+		controllers.ErrResponseWithCode(c, 500, err.Error())
+		return
 	}
 
 	controllers.SuccessResponse(c, payload)
