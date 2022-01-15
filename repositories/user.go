@@ -18,19 +18,19 @@ type UserRepositoryInteface interface {
 
 type UserRepository struct{}
 
-var collection *mongo.Collection = database.OpenCollection(database.Client, "users")
-var model = new(models.UserModel)
+var ucollection *mongo.Collection = database.OpenCollection(database.Client, "users")
+var umodel = new(models.UserModel)
 
 func (ur UserRepository) FindOneUser(filter *bson.D) (*models.UserModel, error) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
-	err := collection.FindOne(ctx, filter).Decode(model)
+	err := ucollection.FindOne(ctx, filter).Decode(umodel)
 	defer cancel()
-	return model, err
+	return umodel, err
 }
 
 func (ur UserRepository) Create(user *models.UserModel) {
 	var ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
-	result, err := collection.InsertOne(ctx, user)
+	result, err := ucollection.InsertOne(ctx, user)
 	if err != nil {
 		log.Fatalln(err)
 	}

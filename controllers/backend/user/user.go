@@ -11,16 +11,10 @@ import (
 	"github.com/Cracker-TG/portfolio-service/securityTokens"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
 type UserController struct{}
-
-type response struct {
-	UID  primitive.ObjectID
-	Code string
-}
 
 var userRepository repositories.UserRepositoryInteface = new(repositories.UserRepository)
 var loginForm = new(forms.Login)
