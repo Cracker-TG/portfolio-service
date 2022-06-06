@@ -1,6 +1,6 @@
 package forms
 
 type Login struct {
-	Username string `json:"username" binding:"required"`
-	Password string `json:"password" binding:"required"`
+	username string `json:"username" binding:"required"`
+	password string `json:"password" binding:"required"`
 }

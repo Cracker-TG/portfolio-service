@@ -1,8 +1,8 @@
 package middlewares
 
 import (
-	"github.com/Cracker-TG/portfolio-service/controllers"
-	"github.com/Cracker-TG/portfolio-service/securityTokens"
+	"github.com/Cracker-TG/crboard/controllers"
+	"github.com/Cracker-TG/crboard/securityTokens"
 	"github.com/gin-gonic/gin"
 )
 

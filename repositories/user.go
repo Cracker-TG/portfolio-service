@@ -2,39 +2,40 @@ package repositories
 
 import (
 	"context"
-	"log"
 	"time"
 
-	"github.com/Cracker-TG/portfolio-service/database"
-	"github.com/Cracker-TG/portfolio-service/models"
+	"github.com/Cracker-TG/crboard/database"
+	"github.com/Cracker-TG/crboard/models"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo"
 )
 
-type UserRepositoryInteface interface {
-	FindOneUser(filter *bson.D) (*models.UserModel, error)
-	Create(user *models.UserModel)
+type IUserRepository interface {
+	FindOneUser() (*models.UserModel, error)
+	// Create(user *models.UserModel)
 }
 
 type UserRepository struct{}
 
-var ucollection *mongo.Collection = database.OpenCollection(database.Client, "users")
+// var collection *mongo.Collection = .OpenCollection("users")
+
 var umodel = new(models.UserModel)
 
-func (ur UserRepository) FindOneUser(filter *bson.D) (*models.UserModel, error) {
+func (ur UserRepository) FindOneUser() (*models.UserModel, error) {
+	var dbI *database.DBinstance = &database.DBinstance{}
+	var collection = dbI.OpenCollection("users")
 	var ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
-	err := ucollection.FindOne(ctx, filter).Decode(umodel)
+	err := collection.FindOne(ctx, bson.M{"username": "admin"}).Decode(umodel)
 	defer cancel()
 	return umodel, err
 }
 
-func (ur UserRepository) Create(user *models.UserModel) {
-	var ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
-	result, err := ucollection.InsertOne(ctx, user)
-	if err != nil {
-		log.Fatalln(err)
-	}
+// func (ur UserRepository) Create(user *models.UserModel) {
+// var ctx, cancel = context.WithTimeout(context.Background(), 5*time.Second)
+// result, err := ucollection.InsertOne(ctx, user)
+// if err != nil {
+// log.Fatalln(err)
+// }
 
-	log.Fatalln(result)
-	defer cancel()
-}
+// log.Fatalln(result)
+// defer cancel()
+// }

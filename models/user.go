@@ -9,9 +9,10 @@ import (
 type UserModel struct {
 	ID        primitive.ObjectID `bson:"_id"`
 	UserName  string             `json:"username"`
-	Name      string             `json:"prefix_name"`
+	FirstName string             `json:"firstName"`
+	LastName  string             `json:"lastName"`
 	Password  string             `json:"password"`
-	Active    bool               `json:"active,omitempty"`
+	Status    string             `json:"status"`
 	Email     string             `json:"email"`
 	CreatedAt time.Time          `json:"created_at,omitempty" bson:"created_at"`
 	UpdatedAt time.Time          `json:"updated_at,omitempty" bson:"updated_at"`

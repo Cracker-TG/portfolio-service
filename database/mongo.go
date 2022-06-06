@@ -2,19 +2,26 @@ package database
 
 import (
 	"context"
-	"fmt"
 	"log"
-	"os"
 	"time"
 
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-//DBinstance func
-func DBinstance() *mongo.Client {
+var clientMongo *mongo.Client
+var dbName *string
 
-	MongoDb := os.Getenv("MONGO_CONNECT")
+type IDBinstance interface {
+	InitDB(host string, port string, dbname string) *mongo.Client
+	OpenCollection(name string) *mongo.Collection
+}
+
+type DBinstance struct{}
+
+func (db *DBinstance) InitDB(host string, port string, dbname string) *mongo.Client {
+
+	MongoDb := "mongodb://" + host + ":" + port
 
 	client, err := mongo.NewClient(options.Client().ApplyURI(MongoDb))
 	if err != nil {
@@ -29,18 +36,19 @@ func DBinstance() *mongo.Client {
 		log.Fatal(err)
 	}
 
-	fmt.Println("Connected to MongoDB!")
+	if clientMongo == nil {
+		clientMongo = client
+	}
+
+	if dbName == nil {
+		dbName = &dbname
+	}
 
 	return client
 }
 
-//Client Database instance
-var Client *mongo.Client = DBinstance()
-
 //OpenCollection is a  function makes a connection with a collection in the database
-func OpenCollection(client *mongo.Client, collectionName string) *mongo.Collection {
-	//db_name := Config.GetString("mongodb.database");
-	db_name := "cr_portfolio"
-	var collection *mongo.Collection = client.Database(db_name).Collection(collectionName)
+func (db *DBinstance) OpenCollection(collectionName string) *mongo.Collection {
+	var collection *mongo.Collection = clientMongo.Database(*dbName).Collection(collectionName)
 	return collection
 }

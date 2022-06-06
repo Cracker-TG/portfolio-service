@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Cracker-TG/portfolio-service/server"
+	"github.com/Cracker-TG/crboard/server"
 )
 
 func main() {
