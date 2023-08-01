@@ -1,11 +1,12 @@
 package server
 
 import (
+	"fmt"
 	"log"
 
-	"github.com/Cracker-TG/crboard/config"
-	"github.com/Cracker-TG/crboard/database"
-	"github.com/Cracker-TG/crboard/routes"
+	"github.com/Cracker-TG/portfolio-service/config"
+	"github.com/Cracker-TG/portfolio-service/database"
+	"github.com/Cracker-TG/portfolio-service/routes"
 )
 
 var DBinstance database.IDBinstance
@@ -18,7 +19,9 @@ func Init() {
 		log.Fatal("cannot load config:", err)
 	}
 
+	fmt.Print(config)
+
 	DBinstance = &database.DBinstance{}
 	DBinstance.InitDB(config.MONGO_HOST, config.MONGO_PORT, config.MOGO_DB)
-	r.Run(":" + "3000")
+	r.Run(":" + config.PORT)
 }

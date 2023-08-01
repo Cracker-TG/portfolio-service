@@ -1,8 +1,8 @@
 package users
 
 import (
-	"github.com/Cracker-TG/crboard/controllers"
-	"github.com/Cracker-TG/crboard/repositories"
+	"github.com/Cracker-TG/portfolio-service/controllers"
+	"github.com/Cracker-TG/portfolio-service/repositories"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/mongo"
 )

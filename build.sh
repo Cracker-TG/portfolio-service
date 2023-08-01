@@ -1,1 +1,1 @@
-docker buildx build --platform linux/amd64  --push -t crackerwinai/cr-crboard .
+docker buildx build --platform linux/amd64  --push -t crackerwinai/cr-portfolio-service .

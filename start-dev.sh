@@ -1,1 +1,1 @@
-gin --appPort 8080 --port 3000
+gin -i --appPort 8080 --port 3000

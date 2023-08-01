@@ -1,4 +1,4 @@
-module github.com/Cracker-TG/crboard
+module github.com/Cracker-TG/portfolio-service-service
 
 go 1.16
 

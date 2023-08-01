@@ -4,8 +4,8 @@ package repositories
 // "context"
 // "time"
 
-// "github.com/Cracker-TG/crboard/database"
-// "github.com/Cracker-TG/crboard/models"
+// "github.com/Cracker-TG/portfolio-service/database"
+// "github.com/Cracker-TG/portfolio-service/models"
 // "go.mongodb.org/mongo-driver/bson"
 // "go.mongodb.org/mongo-driver/mongo"
 // )

@@ -3,7 +3,7 @@ package routes
 import (
 	"net/http"
 
-	"github.com/Cracker-TG/crboard/controllers/users"
+	"github.com/Cracker-TG/portfolio-service/controllers/contacts"
 	"github.com/gin-gonic/gin"
 )
 
@@ -12,22 +12,16 @@ func NewRouter() *gin.Engine {
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
-	userController := new(users.UserController)
+	contactController := new(contacts.ContactController)
 
 	v1 := router.Group("api/v1")
 	{
 		v1.GET("/", func(c *gin.Context) {
 			c.String(http.StatusOK, "hello world")
 		})
-		users := v1.Group("users")
+		users := v1.Group("api/v1")
 		{
-			//users.POST("/login", userController.Login)
-			users.GET("/info", userController.Info)
-			// authorized := backend.Group("/")
-			// authorized.Use(middlewares.AuthRequired())
-			// {
-			// authorized.GET("/user/info", userController.Info)
-			// }
+			users.POST("/contacts", contactController.Store)
 		}
 	}
 
