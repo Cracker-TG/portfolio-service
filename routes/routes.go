@@ -4,8 +4,20 @@ import (
 	"net/http"
 
 	"github.com/Cracker-TG/portfolio-service/controllers/contacts"
+	"github.com/Cracker-TG/portfolio-service/validations"
 	"github.com/gin-gonic/gin"
 )
+
+// ValidationMiddleware is a middleware function to set the custom validator for Gin
+func ValidationMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		// Set the custom validator for the context
+		c.Set("validator", validations.GetCustomValidator())
+
+		// Continue to the next middleware or handler
+		c.Next()
+	}
+}
 
 func NewRouter() *gin.Engine {
 	router := gin.New()
@@ -19,9 +31,14 @@ func NewRouter() *gin.Engine {
 		v1.GET("/", func(c *gin.Context) {
 			c.String(http.StatusOK, "hello world")
 		})
-		users := v1.Group("api/v1")
+		contacts := v1.Group("contacts")
 		{
-			users.POST("/contacts", contactController.Store)
+			// Create a new validator instance
+
+			// Set the custom validator as the default validator for Gin
+			contacts.Use(ValidationMiddleware())
+
+			contacts.POST("/", contactController.Store)
 		}
 	}
 

@@ -1,17 +1,17 @@
-package users
+package contacts
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Cracker-TG/portfolio-service/controllers"
 	"github.com/Cracker-TG/portfolio-service/forms"
+	"github.com/Cracker-TG/portfolio-service/repositories"
 	"github.com/gin-gonic/gin"
 )
 
 type ContactController struct{}
 
-// var contactRepository repositories.IContactRepository = new(repositories.ContactRepository)
+var contactRepository repositories.IContactRepository = new(repositories.ContactRepository)
 
 func (controller ContactController) Store(c *gin.Context) {
 
@@ -22,6 +22,16 @@ func (controller ContactController) Store(c *gin.Context) {
 		return
 	}
 
-	fmt.Print(contactForm)
-	// controllers.SuccessResponse(c, {})
+	result, err := contactRepository.Create(contactForm)
+
+	if err != nil {
+		controllers.ErrResponseWithCode(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	payload := map[string]interface{}{
+		"id": result.InsertedID,
+	}
+
+	controllers.SuccessResponse(c, payload)
 }
