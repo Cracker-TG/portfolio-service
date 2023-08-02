@@ -19,8 +19,9 @@ func ValidationMiddleware() gin.HandlerFunc {
 	}
 }
 
-func NewRouter() *gin.Engine {
-	router := gin.New()
+func NewRouter(router *gin.Engine) *gin.Engine {
+	// router := gin.New()
+	// router.Use(CORS())
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
 
@@ -28,7 +29,7 @@ func NewRouter() *gin.Engine {
 
 	v1 := router.Group("api/v1")
 	{
-		v1.GET("/", func(c *gin.Context) {
+		v1.GET("", func(c *gin.Context) {
 			c.String(http.StatusOK, "hello world")
 		})
 		contacts := v1.Group("contacts")
@@ -38,7 +39,7 @@ func NewRouter() *gin.Engine {
 			// Set the custom validator as the default validator for Gin
 			contacts.Use(ValidationMiddleware())
 
-			contacts.POST("/", contactController.Store)
+			contacts.POST("", contactController.Store)
 		}
 	}
 

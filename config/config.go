@@ -1,6 +1,8 @@
 package config
 
 import (
+	"os"
+
 	"github.com/spf13/viper"
 )
 
@@ -11,11 +13,17 @@ type Config struct {
 	MONGO_HOST string
 	MONGO_PORT string
 	MOGO_DB    string
+	APP_DOMAIN string
 }
 
 // LoadConfig reads configuration from file or environment variables.
 func LoadConfig(path string) (config Config, err error) {
-	viper.SetConfigName("config")
+	if os.Getenv("MODE") == "PRODUCTION" {
+		viper.SetConfigName("config")
+	} else {
+		viper.SetConfigName("devconfig")
+	}
+
 	viper.SetConfigType("env")
 	viper.AddConfigPath(path)
 	err = viper.ReadInConfig()
