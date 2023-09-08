@@ -7,13 +7,14 @@ import (
 )
 
 type Config struct {
-	APP_ENV    string
-	PORT       string
-	DEBUG      bool
-	MONGO_HOST string
-	MONGO_PORT string
-	MOGO_DB    string
-	APP_DOMAIN string
+	APP_ENV              string
+	PORT                 string
+	DEBUG                bool
+	MONGO_HOST           string
+	MONGO_PORT           string
+	MOGO_DB              string
+	APP_DOMAIN           string
+	TURNSTILE_SECRET_KEY string
 }
 
 // LoadConfig reads configuration from file or environment variables.

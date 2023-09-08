@@ -21,6 +21,7 @@ func Init() {
 
 	router := gin.New()
 	router.Use(middlewares.Cors(&config))
+	router.Use(middlewares.CloudflareTokenValidationMiddleware(&config.TURNSTILE_SECRET_KEY))
 	r := routes.NewRouter(router)
 
 	DBinstance = &database.DBinstance{}

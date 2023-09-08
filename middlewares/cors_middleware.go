@@ -1,6 +1,7 @@
 package middlewares
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/Cracker-TG/portfolio-service/config"
@@ -16,9 +17,10 @@ func Cors(config *config.Config) gin.HandlerFunc {
 		}
 
 		c.Writer.Header().Set("Access-Control-Allow-Credentials", "true")
-		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding,  Authorization, accept, origin, Cache-Control")
+		c.Writer.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding,  Authorization, accept, origin, Cache-Control, cf-turnstile-token")
 		c.Writer.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, PUT, DELETE")
 
+		fmt.Println("OPTIONS-", c.Request.Method)
 		if c.Request.Method == "OPTIONS" {
 			c.AbortWithStatus(204)
 			return
